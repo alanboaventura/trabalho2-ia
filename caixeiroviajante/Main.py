@@ -1,6 +1,6 @@
 import numpy as np
 import random
-from pack.funcaoAptidao import apt_func
+from FuncaoAptidao import apt_func
 
 # matriz da populacao com 20 membros
 populacao = np.zeros((20, 20), dtype=np.float)
@@ -31,8 +31,8 @@ for i in range(n_cidades):
 taxa_mutacao = 0.05
 
 # imprime resultados finais na janela de comando
-print("Tamanho da População: " + str(np.size(populacao_ordenada, 0)))
+print("Tamanho da Populacao: " + str(np.size(populacao_ordenada, 0)))
 print("Taxa de Mutacao: " + str(taxa_mutacao))
-print("Número de Cidades: " + str(n_cidades))
+print("Numero de Cidades: " + str(n_cidades))
 print("Melhor Custo: " + str(lista_aptidao[0, 1]))
-print("Melhor Solução: " + str(populacao_ordenada[0, :]))
+print("Melhor Solucao: " + str(populacao_ordenada[0, :]))
