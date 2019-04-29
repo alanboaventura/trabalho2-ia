@@ -5,6 +5,7 @@ import copy
 
 
 def apt_func(populacao, x, y, n_cidades):
+    # gera a matriz 20x21 da populacao onde a ultima coluna eh a copia da primeira coluna (o agente deve voltar a cidade
     tour = np.c_[populacao, populacao[:, 0]]
     
     distancia_cidade = np.zeros((20, 20), dtype=np.float)
@@ -14,7 +15,6 @@ def apt_func(populacao, x, y, n_cidades):
         for j in range(0, n_cidades):
             distancia_cidade[i, j] = math.sqrt(math.pow(x[0, i]-x[0, j], 2) + math.pow(y[0, i]-y[0, j], 2))
 
-    # gera a matriz 20x21 da populacao onde a ultima coluna eh a copia da primeira coluna (o agente deve voltar a cidade
     dist = copy.deepcopy(populacao[:, 0:2])
 
     # custo de cada cromossomo - a soma das distancias para cada individuo
@@ -30,8 +30,5 @@ def apt_func(populacao, x, y, n_cidades):
 
     dist = sorted(dist, key=lambda x: x[1])
     dist = np.array(dist)
-
-    # (custoPop, ind) = sort(custoPop);
-    # pop=pop(ind,1);
 
     return dist
