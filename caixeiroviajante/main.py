@@ -3,34 +3,37 @@ import random
 import collections
 import copy
 import matplotlib.pyplot
-from FuncaoAptidao import apt_func
+import sys
+from caixeiroviajante.funcaoAptidao import apt_func
 
-# matriz da populacao com 20 membros
+# Matriz da populacao com 20 membros.
 populacao = np.zeros((20, 20), dtype=np.float)
 
-# variaveis
+# Variaveis.
 n_cidades = 20
 n_geracoes = 10000
+taxa_mutacao = 0.05
 
-# define populacao aleatoria
+# Define populacao aleatória.
 for i in range(n_cidades):
     populacao[i] = random.sample(range(n_cidades), n_cidades)
 
+# ?
 x = np.random.rand(1, n_cidades)
 y = np.random.rand(1, n_cidades)
 
-# chama a funcao apt_funcao, responsavel por calcular a
+# Chama a funcao apt_funcao, responsavel por calcular a aptidão do caixeiro viajante em sua jornada.
 lista_aptidao = apt_func(populacao[:, :], x, y, n_cidades)
 
-# print(lista_aptidao)
-
+# Cria o array que irá armazenar a população ordenada por resultado da função de aptidão.
 populacao_ordenada = np.zeros((20, 20), dtype=np.float)
 
+# Ordena a população de acordo com o resultado da execução da função de aptidão.
 for i in range(n_cidades):
-    populacao_ordenada[i, :] = populacao[int(lista_aptidao[i,0]), :]
+    populacao_ordenada[i, :] = populacao[int(lista_aptidao[i, 0]), :]
 
-taxa_mutacao = 0.05
-
+# Inicia o array que irá armazenar as possibilidades da roleta, onde o melhor colocado na ordenação pelo resultado da
+# execução da função de aptidão terá mais chances de ser "sorteado".
 roleta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
           1, 1, 1, 1, 1, 1, 1, 1, 1,
           2, 2, 2, 2, 2, 2, 2, 2,
@@ -42,17 +45,16 @@ roleta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
           8, 8,
           9]
 
-geracao = 0
+# Array que será utilizado como referência para montagem do gráfico no final da execução do algoritmo.
 array_plot = []
-while geracao < n_geracoes:
 
-    # for a in range(10, 20):
-    #     print populacao_ordenada[a, :]
+# Indice da geração para controle do laço de repetição.
+indice_geracao = 0
 
+while indice_geracao < n_geracoes:
+    # Sorteia os números que serão utilizados na roleta.
     grupo_pais1 = random.sample(range(0, 55), 5)
     grupo_pais2 = random.sample(range(0, 55), 5)
-    # print grupo_pais1
-    # print grupo_pais2
 
     posicao_filho1 = 10
     posicao_filho2 = 11
@@ -98,13 +100,9 @@ while geracao < n_geracoes:
         posicao_filho2 += 2
         ii += 1
 
-    # mutacao
-
+    # Mutação de genes.
     i_mutacao = random.randint(0, 19)
     pos_mutacao = random.sample(range(0, 19), 2)
-
-    #print i_mutacao
-    #print pos_mutacao
 
     mut_a = copy.deepcopy(populacao_ordenada[i_mutacao, pos_mutacao[0]])
     mut_b = copy.deepcopy(populacao_ordenada[i_mutacao, pos_mutacao[1]])
@@ -112,22 +110,16 @@ while geracao < n_geracoes:
     populacao_ordenada[i_mutacao, pos_mutacao[0]] = mut_b
     populacao_ordenada[i_mutacao, pos_mutacao[1]] = mut_a
 
-    # print "--"
-    # for a in range(10, 20):
-    #     print populacao_ordenada[a, :]
-
     lista_aptidao = apt_func(populacao_ordenada[:, :], x, y, n_cidades)
-
     array_plot.append(lista_aptidao[0, 1])
 
     populacao_ordenada_aux = copy.deepcopy(populacao_ordenada)
     for i in range(n_cidades):
         populacao_ordenada[i, :] = populacao_ordenada_aux[int(lista_aptidao[i, 0]), :]
 
-    geracao += 1
+    indice_geracao += 1
 
-
-# imprime resultados finais na janela de comando
+# Imprime resultados finais na janela de comando e exibe o gráfico.
 print("Tamanho da Populacao: " + str(np.size(populacao_ordenada, 0)))
 print("Taxa de Mutacao: " + str(taxa_mutacao))
 print("Numero de Cidades: " + str(n_cidades))
@@ -136,3 +128,6 @@ print("Melhor Solucao: " + str(populacao_ordenada[0, :]))
 matplotlib.pyplot.ylim(3, 10)
 matplotlib.pyplot.plot(array_plot)
 matplotlib.pyplot.show()
+
+# Finaliza a execução do algoritmo
+sys.exit()
