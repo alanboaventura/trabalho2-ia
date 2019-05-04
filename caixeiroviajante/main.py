@@ -130,9 +130,6 @@ while indice_geracao < n_geracoes:
     for i in range(n_cidades):
         populacao_ordenada[i, :] = populacao_ordenada_aux[int(lista_aptidao[i, 0]), :]
 
-    # Informativo para o usuário ter uma noção do tempo que irá demorar para terminar os cálculos.
-    print("Geração [" + str(indice_geracao) + "/" + str(n_geracoes) + "] processada com sucesso.")
-
     indice_geracao += 1
 
 # Salva o instante de "término" da execução do algoritmo.
@@ -141,12 +138,12 @@ end = time.time()
 # "Calcula" o tempo (em segundos") de execução do algoritmo.
 executionTime = str("%.1f" % (end - start))
 
+# Imprime resultados finais na janela de comando e exibe o gráfico.
 print("")
 print("O algoritmo levou " + executionTime + " segundos para executar")
 print("")
-print("------------------------------------------------------------------------------------------")
+print("-------------------------------------------------------------------------------")
 print("")
-# Imprime resultados finais na janela de comando e exibe o gráfico.
 print("Resultados:")
 print("")
 print("Tamanho da Populacao: " + str(numpy.size(populacao_ordenada, 0)))
@@ -154,6 +151,7 @@ print("Taxa de Mutacao: " + str(taxa_mutacao))
 print("Numero de Cidades: " + str(n_cidades))
 print("Melhor Custo: " + str(lista_aptidao[0, 1]))
 print("Melhor Solucao: " + str(populacao_ordenada[0, :]))
+print("")
 
 matplotlib.pyplot.ylim(3, 10)
 matplotlib.pyplot.plot(array_plot)
