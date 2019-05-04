@@ -1,7 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import numpy as np
 import math
 import copy
-
 
 def apt_func(populacao, x, y, n_cidades):
     # Gera a matriz 20x21 da populacao onde a ultima coluna é a cópia da primeira coluna (O final é na cidade inicial).

@@ -1,10 +1,13 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import numpy as np
 import random
 import collections
 import copy
 import matplotlib.pyplot
 import sys
-from caixeiroviajante.funcaoAptidao import apt_func
+from funcaoAptidao import apt_func
 
 # Matriz da populacao com 20 membros.
 populacao = np.zeros((20, 20), dtype=np.float)
