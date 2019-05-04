@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import numpy as np
 import random
 import collections
@@ -5,7 +8,8 @@ import copy
 import matplotlib.pyplot
 import sys
 import time
-from caixeiroviajante.funcaoAptidao import apt_func
+# from caixeiroviajante.funcaoAptidao import apt_func
+from funcaoAptidao import apt_func
 
 # Salva o instante de inicio da execução do algoritmo.
 start = time.time()
