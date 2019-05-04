@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy as np
+import numpy
 import random
 import collections
 import copy
 import matplotlib.pyplot
 import sys
 import time
+import math
 # from caixeiroviajante.funcaoAptidao import apt_func
 from funcaoAptidao import apt_func
 
@@ -15,7 +16,7 @@ from funcaoAptidao import apt_func
 start = time.time()
 
 # Matriz da populacao com 20 membros.
-populacao = np.zeros((20, 20), dtype=np.float)
+populacao = numpy.zeros((20, 20), dtype=numpy.float)
 
 # Variaveis.
 n_cidades = 20
@@ -27,14 +28,21 @@ for i in range(n_cidades):
     populacao[i] = random.sample(range(n_cidades), n_cidades)
 
 # ?
-x = np.random.rand(1, n_cidades)
-y = np.random.rand(1, n_cidades)
+x = numpy.random.rand(1, n_cidades)
+y = numpy.random.rand(1, n_cidades)
+
+distancia_cidade = numpy.zeros((20, 20), dtype=numpy.float)
+
+# Distancia entre as cidades.
+for i in range(0, n_cidades):
+    for j in range(0, n_cidades):
+        distancia_cidade[i, j] = math.sqrt(math.pow(x[0, i] - x[0, j], 2) + math.pow(y[0, i] - y[0, j], 2))
 
 # Chama a funcao apt_funcao, responsavel por calcular a aptidão do caixeiro viajante em sua jornada.
-lista_aptidao = apt_func(populacao[:, :], x, y, n_cidades)
+lista_aptidao = apt_func(populacao[:, :], distancia_cidade[:, :], n_cidades)
 
 # Cria o array que irá armazenar a população ordenada por resultado da função de aptidão.
-populacao_ordenada = np.zeros((20, 20), dtype=np.float)
+populacao_ordenada = numpy.zeros((20, 20), dtype=numpy.float)
 
 # Ordena a população de acordo com o resultado da execução da função de aptidão.
 for i in range(n_cidades):
@@ -115,7 +123,7 @@ while indice_geracao < n_geracoes:
     populacao_ordenada[i_mutacao, pos_mutacao[0]] = mut_b
     populacao_ordenada[i_mutacao, pos_mutacao[1]] = mut_a
 
-    lista_aptidao = apt_func(populacao_ordenada[:, :], x, y, n_cidades)
+    lista_aptidao = apt_func(populacao_ordenada[:, :], distancia_cidade[:, :], n_cidades)
     array_plot.append(lista_aptidao[0, 1])
 
     populacao_ordenada_aux = copy.deepcopy(populacao_ordenada)
@@ -127,29 +135,29 @@ while indice_geracao < n_geracoes:
 
     indice_geracao += 1
 
-# Imprime resultados finais na janela de comando e exibe o gráfico.
-print()
-print("------------------------------------------------------------------------------------------")
-print()
-print("Resultados:")
-print()
-print("Tamanho da Populacao: " + str(np.size(populacao_ordenada, 0)))
-print("Taxa de Mutacao: " + str(taxa_mutacao))
-print("Numero de Cidades: " + str(n_cidades))
-print("Melhor Custo: " + str(lista_aptidao[0, 1]))
-print("Melhor Solucao: " + str(populacao_ordenada[0, :]))
-matplotlib.pyplot.ylim(3, 10)
-matplotlib.pyplot.plot(array_plot)
-matplotlib.pyplot.show()
-
 # Salva o instante de "término" da execução do algoritmo.
 end = time.time()
 
 # "Calcula" o tempo (em segundos") de execução do algoritmo.
 executionTime = str("%.1f" % (end - start))
 
-print()
+print("")
 print("O algoritmo levou " + executionTime + " segundos para executar")
+print("")
+print("------------------------------------------------------------------------------------------")
+print("")
+# Imprime resultados finais na janela de comando e exibe o gráfico.
+print("Resultados:")
+print("")
+print("Tamanho da Populacao: " + str(numpy.size(populacao_ordenada, 0)))
+print("Taxa de Mutacao: " + str(taxa_mutacao))
+print("Numero de Cidades: " + str(n_cidades))
+print("Melhor Custo: " + str(lista_aptidao[0, 1]))
+print("Melhor Solucao: " + str(populacao_ordenada[0, :]))
+
+matplotlib.pyplot.ylim(3, 10)
+matplotlib.pyplot.plot(array_plot)
+matplotlib.pyplot.show()
 
 # Finaliza a execução do algoritmo
 sys.exit()
