@@ -2,27 +2,32 @@
 # -*- coding: utf-8 -*-
 
 import numpy
-import copy
 
-def apt_func(populacao, distancia_cidade, n_cidades):
-    # Gera a matriz 20x21 da populacao onde a ultima coluna é a cópia da primeira coluna (O final é na cidade inicial).
+
+def apt_func(populacao, v_aptidaoancia_cidade, n_rotas):
+    # Gera a matriz 20x21 da população onde a última coluna é a cópia da primeira coluna
+    # A última coluna é igual a primeira pois o caixeiro viajante precisa retornar a cidade original
     tour = numpy.c_[populacao, populacao[:, 0]]
 
-    # ?
-    dist = copy.deepcopy(populacao[:, 0:2])
+    # Cria uma matrix 20x2 para receber a aptidão de cada cromossomo
+    # A primeira coluna corresponde ao índice do cromossomo na matriz de população
+    # A segunda coluna representa o valor de aptidão
+    v_aptidao = numpy.zeros((20, 2), dtype=numpy.float)
 
-    # Custo de cada cromossomo - a soma das distancias para cada individuo.
-    for i in range(0, n_cidades):
-        dist[i, 0] = i
-        dist[i, 1] = 0
-        # Soma das distancias para cada cromossomo.
-        for j in range(0, n_cidades):
-            dist[i, 1] = dist[i, 1] + distancia_cidade[int(tour[i, j]), int(tour[i, j + 1])]
+    # Percorre o total de rotas existentes no algoritmo. Neste exemplo, cada rota representa um membro da população
+    for i in range(0, n_rotas):
+        v_aptidao[i, 0] = i
+        v_aptidao[i, 1] = 0
+        # Para cada cidade calcula a v_aptidaoância entre ela e a próxima cidade
+        for j in range(0, n_rotas):
+            v_aptidao[i, 1] += v_aptidaoancia_cidade[int(tour[i, j]), int(tour[i, j + 1])]
 
-    for i in range(0, n_cidades):
-        dist[i, 0] = int(dist[i, 0])
+    # Loop para converter os índices do vetor de aptidão em inteiros
+    for i in range(0, n_rotas):
+        v_aptidao[i, 0] = int(v_aptidao[i, 0])
 
-    dist = sorted(dist, key=lambda x: x[1])
-    dist = numpy.array(dist)
+    # Utiliza a função sorted para ordenar a matriz pela segunda coluna, correspondente ao valor de aptidão
+    v_aptidao = sorted(v_aptidao, key=lambda x: x[1])
+    v_aptidao = numpy.array(v_aptidao)
 
-    return dist
+    return v_aptidao
