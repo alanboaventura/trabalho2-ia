@@ -4,7 +4,11 @@ import collections
 import copy
 import matplotlib.pyplot
 import sys
+import time
 from caixeiroviajante.funcaoAptidao import apt_func
+
+# Salva o instante de inicio da execução do algoritmo.
+start = time.time()
 
 # Matriz da populacao com 20 membros.
 populacao = np.zeros((20, 20), dtype=np.float)
@@ -61,9 +65,6 @@ while indice_geracao < n_geracoes:
 
     ii = 0
     while ii < 5:
-        # print grupo_pais1[i]
-        # print roleta[grupo_pais1[i]]
-        # print populacao_ordenada[roleta[grupo_pais1[i]], :]
         filho1 = copy.deepcopy(populacao_ordenada[roleta[grupo_pais1[ii]], :])
         filho2 = copy.deepcopy(populacao_ordenada[roleta[grupo_pais2[ii]], :])
 
@@ -117,9 +118,17 @@ while indice_geracao < n_geracoes:
     for i in range(n_cidades):
         populacao_ordenada[i, :] = populacao_ordenada_aux[int(lista_aptidao[i, 0]), :]
 
+    # Informativo para o usuário ter uma noção do tempo que irá demorar para terminar os cálculos.
+    print("Geração [" + str(indice_geracao) + "/" + str(n_geracoes) + "] processada com sucesso.")
+
     indice_geracao += 1
 
 # Imprime resultados finais na janela de comando e exibe o gráfico.
+print()
+print("------------------------------------------------------------------------------------------")
+print()
+print("Resultados:")
+print()
 print("Tamanho da Populacao: " + str(np.size(populacao_ordenada, 0)))
 print("Taxa de Mutacao: " + str(taxa_mutacao))
 print("Numero de Cidades: " + str(n_cidades))
@@ -128,6 +137,15 @@ print("Melhor Solucao: " + str(populacao_ordenada[0, :]))
 matplotlib.pyplot.ylim(3, 10)
 matplotlib.pyplot.plot(array_plot)
 matplotlib.pyplot.show()
+
+# Salva o instante de "término" da execução do algoritmo.
+end = time.time()
+
+# "Calcula" o tempo (em segundos") de execução do algoritmo.
+executionTime = str("%.1f" % (end - start))
+
+print()
+print("O algoritmo levou " + executionTime + " segundos para executar")
 
 # Finaliza a execução do algoritmo
 sys.exit()
