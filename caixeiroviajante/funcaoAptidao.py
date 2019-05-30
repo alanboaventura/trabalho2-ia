@@ -4,7 +4,7 @@
 import numpy
 
 
-def apt_func(populacao, v_aptidaoancia_cidade, n_rotas):
+def apt_func(populacao, distanciacidades, n_rotas):
     # Gera a matriz 20x21 da população onde a última coluna é a cópia da primeira coluna.
     # A última coluna é igual a primeira pois o caixeiro viajante precisa retornar a cidade original.
     tour = numpy.c_[populacao, populacao[:, 0]]
@@ -20,7 +20,7 @@ def apt_func(populacao, v_aptidaoancia_cidade, n_rotas):
         v_aptidao[i, 1] = 0
         # Para cada cidade calcula a v_aptidaoância entre ela e a próxima cidade.
         for j in range(0, n_rotas):
-            v_aptidao[i, 1] += v_aptidaoancia_cidade[int(tour[i, j]), int(tour[i, j + 1])]
+            v_aptidao[i, 1] += distanciacidades[int(tour[i, j]), int(tour[i, j + 1])]
 
     # Loop para converter os índices do vetor de aptidão em inteiros.
     for i in range(0, n_rotas):
